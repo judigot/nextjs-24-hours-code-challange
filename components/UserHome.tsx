@@ -2,6 +2,7 @@ import React from "react";
 import { FormEventHandler, useRef, useState } from "react";
 
 import styled from "styled-components";
+import styles from "../styles/Home.module.css";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -18,7 +19,7 @@ const Content = styled.div`
     max-width: 200px;
   }
   @media (min-width: 300px) {
-    max-width: 300px;
+    max-width: 400px;
   }
   @media (min-width: 700px) {
     max-width: 700px;
@@ -43,31 +44,6 @@ const TableHeader = styled.th`
 
 const TableData = styled.td`
   border: 1px solid black;
-`;
-
-const TableHeaderHideable = styled.th`
-  border: 1px solid black;
-  @media screen and (max-width: 700px) {
-    visibility: hidden;
-    display: none;
-  }
-`;
-
-const TableDataHideable = styled.td`
-  border: 1px solid black;
-  @media screen and (max-width: 700px) {
-    visibility: hidden;
-    display: none;
-  }
-`;
-
-const TableHeaderShowable = styled.th`
-  visibility: hidden;
-  display: none;
-  @media screen and (max-width: 700px) {
-    visibility: visible;
-    display: initial;
-  }
 `;
 
 interface Props {}
@@ -148,24 +124,38 @@ export const UserHome = (props: Props) => {
           <TableHeader className="xxxxxxxxxxxxxx">
             Date (mm/dd/yyyy)
           </TableHeader>
-          <TableHeaderHideable className="xxxxxxxxxxxxxx">
-            Temperature (F)
-          </TableHeaderHideable>
-          <TableHeaderShowable className="xxxxxxxxxxxxxx">
+          <TableHeader className={styles["hide-on-mobile"]}>
             Temp (F)
-          </TableHeaderShowable>
-          <TableHeaderHideable>Description</TableHeaderHideable>
-          <TableHeaderHideable>Main</TableHeaderHideable>
-          <TableHeaderHideable>Pressure</TableHeaderHideable>
-          <TableHeaderHideable>Humidity</TableHeaderHideable>
+          </TableHeader>
+          <TableHeader className={styles["show-on-mobile"]}>
+            Temperature (F)
+          </TableHeader>
+          <TableHeader className={styles["hide-on-mobile"]}>
+            Description
+          </TableHeader>
+          <TableHeader className={styles["hide-on-mobile"]}>Main</TableHeader>
+          <TableHeader className={styles["hide-on-mobile"]}>
+            Pressure
+          </TableHeader>
+          <TableHeader className={styles["hide-on-mobile"]}>
+            Humidity
+          </TableHeader>
         </tr>
         <tr>
           <TableData>{weatherForecast.date}</TableData>
           <TableData>{weatherForecast.temp}</TableData>
-          <TableDataHideable>{weatherForecast.desc}</TableDataHideable>
-          <TableDataHideable>{weatherForecast.main}</TableDataHideable>
-          <TableDataHideable>{weatherForecast.pressure}</TableDataHideable>
-          <TableDataHideable>{weatherForecast.humidity}</TableDataHideable>
+          <TableData className={styles["hide-on-mobile"]}>
+            {weatherForecast.desc}
+          </TableData>
+          <TableData className={styles["hide-on-mobile"]}>
+            {weatherForecast.main}
+          </TableData>
+          <TableData className={styles["hide-on-mobile"]}>
+            {weatherForecast.pressure}
+          </TableData>
+          <TableData className={styles["hide-on-mobile"]}>
+            {weatherForecast.humidity}
+          </TableData>
         </tr>
       </Table>
       <br />

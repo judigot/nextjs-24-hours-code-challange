@@ -5,6 +5,7 @@ import Head from "next/head";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { Navbar } from "../components/Navbar";
+import { UserNav as NavbarAuth } from "./NavbarAuth";
 import { Public } from "../components/Public";
 import { UserHome } from "../components/UserHome";
 
@@ -25,7 +26,11 @@ export const App: any = () => {
         ></link>
       </Head>
 
-      <Navbar isAuth={isAuthenticated} />
+      {isAuthenticated ? (
+        <NavbarAuth isAuth={isAuthenticated} />
+      ) : (
+        <Navbar isAuth={isAuthenticated} />
+      )}
 
       {/* Dynamic Content */}
       {!isAuthenticated && <Public />}
