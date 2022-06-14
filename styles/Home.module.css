@@ -18,7 +18,7 @@
 
 /* Current/active navbar link */
 .active {
-  background-color: #62ACED;
+  background-color: #62aced;
 }
 
 /* Add responsiveness - will automatically display the navbar vertically instead of horizontally on screens less than 500 pixels */
@@ -26,5 +26,21 @@
   .navbar a {
     float: none;
     display: block;
+  }
+}
+
+.show-on-mobile {
+  display: none;
+}
+
+@media (min-width: 200px) and (max-width: 700px) {
+  .title {
+    display: none;
+  }
+  .hide-on-mobile {
+    display: none;
+  }
+  .show-on-mobile {
+    display: contents;
   }
 }

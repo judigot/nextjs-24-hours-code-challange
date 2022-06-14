@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 
 import styled from "styled-components";
 
-import { LogoutButton } from "../components/LogoutButton";
+import { LogoutButton } from "./LogoutButton";
 
 const Title = styled.div`
   font-size: 30px;
@@ -15,7 +15,7 @@ interface Props {
   isAuth: boolean;
 }
 
-export const Navbar = (props: Props) => {
+export const UserNav = (props: Props) => {
   return (
     <>
       <div className={styles.navbar}>
