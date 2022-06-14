@@ -3,7 +3,6 @@ import { FormEventHandler, useRef, useState } from "react";
 
 import styled from "styled-components";
 
-import { LoginButton as div } from "../components/LoginButton";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Content = styled.div`
@@ -14,6 +13,22 @@ const Content = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 10px;
+
+  @media (min-width: 200px) {
+    max-width: 200px;
+  }
+  @media (min-width: 300px) {
+    max-width: 300px;
+  }
+  @media (min-width: 700px) {
+    max-width: 700px;
+  }
+`;
+
+const UserInfo = styled.div`
+  @media (min-width: 200px) and (max-width: 700px) {
+    display: none;
+  }
 `;
 
 const Table = styled.table`
@@ -28,6 +43,31 @@ const TableHeader = styled.th`
 
 const TableData = styled.td`
   border: 1px solid black;
+`;
+
+const TableHeaderHideable = styled.th`
+  border: 1px solid black;
+  @media screen and (max-width: 700px) {
+    visibility: hidden;
+    display: none;
+  }
+`;
+
+const TableDataHideable = styled.td`
+  border: 1px solid black;
+  @media screen and (max-width: 700px) {
+    visibility: hidden;
+    display: none;
+  }
+`;
+
+const TableHeaderShowable = styled.th`
+  visibility: hidden;
+  display: none;
+  @media screen and (max-width: 700px) {
+    visibility: visible;
+    display: initial;
+  }
 `;
 
 interface Props {}
@@ -108,21 +148,24 @@ export const UserHome = (props: Props) => {
           <TableHeader className="xxxxxxxxxxxxxx">
             Date (mm/dd/yyyy)
           </TableHeader>
-          <TableHeader className="xxxxxxxxxxxxxx">Temperature (F)</TableHeader>
-          <TableHeader className="xxxxxxxxxxxxxx">Temp (F)</TableHeader>
-          <TableHeader className="xxxxxxxxxxxxxx">Description</TableHeader>
-          <TableHeader className="xxxxxxxxxxxxxx">Main</TableHeader>
-          <TableHeader className="xxxxxxxxxxxxxx">Pressure</TableHeader>
-          <TableHeader className="xxxxxxxxxxxxxx">Humidity</TableHeader>
+          <TableHeaderHideable className="xxxxxxxxxxxxxx">
+            Temperature (F)
+          </TableHeaderHideable>
+          <TableHeaderShowable className="xxxxxxxxxxxxxx">
+            Temp (F)
+          </TableHeaderShowable>
+          <TableHeaderHideable>Description</TableHeaderHideable>
+          <TableHeaderHideable>Main</TableHeaderHideable>
+          <TableHeaderHideable>Pressure</TableHeaderHideable>
+          <TableHeaderHideable>Humidity</TableHeaderHideable>
         </tr>
         <tr>
           <TableData>{weatherForecast.date}</TableData>
           <TableData>{weatherForecast.temp}</TableData>
-          <TableData>{weatherForecast.temp}</TableData>
-          <TableData>{weatherForecast.desc}</TableData>
-          <TableData>{weatherForecast.main}</TableData>
-          <TableData>{weatherForecast.pressure}</TableData>
-          <TableData>{weatherForecast.humidity}</TableData>
+          <TableDataHideable>{weatherForecast.desc}</TableDataHideable>
+          <TableDataHideable>{weatherForecast.main}</TableDataHideable>
+          <TableDataHideable>{weatherForecast.pressure}</TableDataHideable>
+          <TableDataHideable>{weatherForecast.humidity}</TableDataHideable>
         </tr>
       </Table>
       <br />
@@ -132,18 +175,20 @@ export const UserHome = (props: Props) => {
 
   const form = (
     <Content>
-      <p>
-        <b>{user?.name}</b>
-      </p>
-      <p>
-        <a
-          target="_blank"
-          href={"https://github.com/" + user?.nickname}
-          rel="noreferrer"
-        >
-          https://github.com/{user?.nickname}
-        </a>
-      </p>
+      <UserInfo>
+        <p>
+          <b>{user?.name}</b>
+        </p>
+        <p>
+          <a
+            target="_blank"
+            href={"https://github.com/" + user?.nickname}
+            rel="noreferrer"
+          >
+            https://github.com/{user?.nickname}
+          </a>
+        </p>
+      </UserInfo>
       <form
         onSubmit={(e) => {
           handleSubmit(e);
