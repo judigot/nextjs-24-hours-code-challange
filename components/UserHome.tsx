@@ -29,7 +29,29 @@ export const UserHome = (props: Props) => {
 
     // Get form values
     const city: Form["city"] = cityRef.current.value;
-    alert(city);
+
+    const date = new Date();
+    const day = date.getDate();
+
+    let APIKey = "46d085bb91e21de943adb6068339a05e";
+    let CORS = "https://cors-anywhere.herokuapp.com/";
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${APIKey}`;
+
+    fetch(CORS + url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+      // body: { firstName: "First Name", lastName: "Lastname" }, // For POST requests only
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        alert(JSON.stringify(result));
+      })
+      .catch((error) => {
+        // Failure
+      });
   };
 
   const { user } = useAuth0();
@@ -60,6 +82,7 @@ export const UserHome = (props: Props) => {
           type="text"
           name="city"
         />
+
         <br />
         <br />
 
