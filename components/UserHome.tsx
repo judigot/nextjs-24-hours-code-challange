@@ -77,7 +77,7 @@ export const UserHome = (props: Props) => {
     let CORS = "https://cors-anywhere.herokuapp.com/";
     let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${APIKey}`;
 
-    fetch(CORS + url, {
+    fetch(url, {
       method: "GET", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json",
