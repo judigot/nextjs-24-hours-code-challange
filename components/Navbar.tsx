@@ -5,15 +5,14 @@ import styles from "../styles/Home.module.css";
 
 import styled from "styled-components";
 
+import { LogoutButton } from "../components/LogoutButton";
+
 const Title = styled.div`
   font-size: 30px;
 `;
 
-interface Props {}
-
-interface Form {
-  username?: string;
-  password?: string;
+interface Props {
+  isAuth: boolean;
 }
 
 export const Navbar = (props: Props) => {
@@ -26,6 +25,7 @@ export const Navbar = (props: Props) => {
             <span className={styles.title}>Weather Forecast</span>
           </Title>
         </a>
+        {props.isAuth && <LogoutButton />}
       </div>
     </>
   );
