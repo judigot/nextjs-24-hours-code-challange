@@ -3,7 +3,7 @@ import { FormEventHandler, useRef, useState } from "react";
 
 import styled from "styled-components";
 
-import { LoginButton } from "../components/LoginButton";
+import { LoginButton as div } from "../components/LoginButton";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Content = styled.div`
@@ -13,6 +13,21 @@ const Content = styled.div`
   width: 800px;
   margin-left: auto;
   margin-right: auto;
+  padding: 10px;
+`;
+
+const Table = styled.table`
+  text-align: center;
+  border: 1px solid black;
+  border-collapse: collapse;
+`;
+
+const TableHeader = styled.th`
+  border: 1px solid black;
+`;
+
+const TableData = styled.td`
+  border: 1px solid black;
 `;
 
 interface Props {}
@@ -21,17 +36,26 @@ interface Form {
   city?: string;
 }
 
+interface Forecast {
+  date?: string;
+  temp?: number;
+  desc?: string;
+  main?: string;
+  pressure?: number;
+  humidity?: number;
+}
+
 export const UserHome = (props: Props) => {
+  const { user } = useAuth0();
   const cityRef = useRef<HTMLInputElement>(null!);
+
+  const [weatherForecast, setWeatherForecast] = useState<Forecast>({});
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Get form values
     const city: Form["city"] = cityRef.current.value;
-
-    const date = new Date();
-    const day = date.getDate();
 
     let APIKey = "46d085bb91e21de943adb6068339a05e";
     let CORS = "https://cors-anywhere.herokuapp.com/";
@@ -40,22 +64,73 @@ export const UserHome = (props: Props) => {
     fetch(CORS + url, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
-        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
       // body: { firstName: "First Name", lastName: "Lastname" }, // For POST requests only
     })
       .then((response) => response.json())
       .then((result) => {
-        alert(JSON.stringify(result));
+        const d = new Date(result.dt * 1000);
+        const month = d.getMonth() + 1;
+        const day = d.getDate();
+        const year = d.getFullYear();
+
+        // Date
+        const date = `${month < 10 ? 0 : ""}${month}/${day}/${year}`;
+        const temp = result.main.temp;
+        const desc = result.weather[0].description;
+        const main = result.weather[0].main;
+        const pressure = result.main.pressure;
+        const humidity = result.main.humidity;
+
+        setWeatherForecast({
+          date,
+          temp,
+          desc,
+          main,
+          pressure,
+          humidity,
+        });
       })
       .catch((error) => {
         // Failure
       });
   };
 
-  const { user } = useAuth0();
-  return (
+  const handleBack = () => {
+    setWeatherForecast({});
+  };
+
+  const weather = (
+    <Content>
+      <Table>
+        <tr>
+          <TableHeader className="xxxxxxxxxxxxxx">
+            Date (mm/dd/yyyy)
+          </TableHeader>
+          <TableHeader className="xxxxxxxxxxxxxx">Temperature (F)</TableHeader>
+          <TableHeader className="xxxxxxxxxxxxxx">Temp (F)</TableHeader>
+          <TableHeader className="xxxxxxxxxxxxxx">Description</TableHeader>
+          <TableHeader className="xxxxxxxxxxxxxx">Main</TableHeader>
+          <TableHeader className="xxxxxxxxxxxxxx">Pressure</TableHeader>
+          <TableHeader className="xxxxxxxxxxxxxx">Humidity</TableHeader>
+        </tr>
+        <tr>
+          <TableData>{weatherForecast.date}</TableData>
+          <TableData>{weatherForecast.temp}</TableData>
+          <TableData>{weatherForecast.temp}</TableData>
+          <TableData>{weatherForecast.desc}</TableData>
+          <TableData>{weatherForecast.main}</TableData>
+          <TableData>{weatherForecast.pressure}</TableData>
+          <TableData>{weatherForecast.humidity}</TableData>
+        </tr>
+      </Table>
+      <br />
+      <button onClick={handleBack}>Back</button>
+    </Content>
+  );
+
+  const form = (
     <Content>
       <p>
         <b>{user?.name}</b>
@@ -88,9 +163,8 @@ export const UserHome = (props: Props) => {
 
         <button type="submit">Display Weather</button>
       </form>
-      <div>
-        <LoginButton>Login</LoginButton>
-      </div>
     </Content>
   );
+
+  return !Object.keys(weatherForecast).length ? <>{form}</> : <>{weather}</>;
 };
