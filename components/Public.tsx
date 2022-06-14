@@ -13,6 +13,16 @@ const Content = styled.div`
   margin-left: auto;
   margin-right: auto;
   text-align: justify;
+
+  @media (min-width: 200px) {
+    max-width: 200px;
+  }
+  @media (min-width: 300px) {
+    max-width: 300px;
+  }
+  @media (min-width: 700px) {
+    max-width: 700px;
+  }
 `;
 
 interface Props {}
